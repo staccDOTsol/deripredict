@@ -3,9 +3,10 @@ import tensorflow as tf
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 import os
 import pandas as pd
-from exchange_wrappers import deribit_wrapper
+import deribit_wrapper
 import requests
 
 def multivariate_data(dataset, target, start_index, end_index, history_size,
@@ -158,21 +159,22 @@ def get_predictor(STEP = 1, future_target = 5):
     
   return single_step_model
 
-def prediction_service():
-  predictors = {}
+def prediction_service(predictors={}):
   predictions = {}
-  predictors["predictor_one"] = {
-    "model" : get_predictor(1, 1),
-    "step" : 1,
-    "target_step": 1
-  }
-  predictors["predictor_two"] = {
-    "model" : get_predictor(1,5),
-    "step" : 1,
-    "target_step": 5
-  }
+  if predictors = {}:
+    predictors["1m"] = {
+        "model" : get_predictor(1, 1),
+        "step" : 1,
+        "target_step": 1
+    }
+    predictors["5m"] = {
+        "model" : get_predictor(1,5),
+        "step" : 1,
+        "target_step": 5
+    } 
   for p in predictors:
     p_dict = predictors[p]
-    run_live_predict(p_dict["model"], p_dict["step"])
+    predictions{p} = run_live_predict(p_dict["model"], p_dict["step"])
+
 prediction_service()
 

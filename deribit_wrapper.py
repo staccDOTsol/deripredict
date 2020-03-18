@@ -25,7 +25,7 @@ class DeribitWrapper(object):
         print(start, end)
         response = requests.get(self.base_endpoint + self.candlestick_endpoint.format(int(end),instrument,interval,int(start))).json()["result"]
         df = pd.DataFrame(response)
-        df.to_csv("./hist_data/deribit/btc.txt")
+        #df.to_csv("./hist_data/deribit/btc.txt")
         return df
 
     def get_start_end(self, num_days):
