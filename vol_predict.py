@@ -8,6 +8,19 @@ import os
 import pandas as pd
 import deribit_wrapper
 import requests
+from flask import Flask
+from flask import jsonify
+
+from flask import flash, render_template, request, redirect
+
+app = Flask(__name__)
+app.secret_key = "coindexpoc_]K#)=fq;wAu-4zSu%xu}yer+/rw%(n"
+
+import _thread
+
+def flaskThread():
+    app.run(debug=False, use_reloader=False,host='0.0.0.0', port=8081)
+
 
 def multivariate_data(dataset, target, start_index, end_index, history_size,
                       target_size, step, single_step=False):
@@ -158,7 +171,7 @@ def get_predictor(STEP = 1, future_target = 5):
     plot.show()
     
   return single_step_model
-
+predictions = {}
 def prediction_service(predictors={}):
   predictions = {}
   if predictors = {}:
@@ -175,6 +188,13 @@ def prediction_service(predictors={}):
   for p in predictors:
     p_dict = predictors[p]
     predictions{p} = run_live_predict(p_dict["model"], p_dict["step"])
-
+@app.route('/predictions', methods=['GET'])
+    def set():
+        try:    
+            return jsonify(predictions)
+        except:
+            return('500')
+        
+_thread.start_new_thread(flaskThread,())
 prediction_service()
 
