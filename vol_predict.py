@@ -4,6 +4,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import time
+import json
+from time import sleep
 import os
 import pandas as pd
 import deribit_wrapper
@@ -173,7 +175,7 @@ def get_predictor(STEP = 1, future_target = 5):
   return single_step_model
 predictions = {}
 def prediction_service(predictors={}):
-  predictions = {}
+  
   if predictors == {}:
     predictors["1m"] = {
         "model" : get_predictor(1, 1),
@@ -190,11 +192,16 @@ def prediction_service(predictors={}):
     predictions[p] = run_live_predict(p_dict["model"], p_dict["step"])
 @app.route('/predictions', methods=['GET'])
 def set():
-    try:    
-        return jsonify(predictions)
-    except:
+    print(predictions)
+    try:
+        answer = {'1m':json.dumps(str(predictions['1m'][-1])), '5m': json.dumps(str(predictions['5m'][-1]))}
+        
+        return(json.dumps(answer))
+    except Exception as e:
+        print(e)
         return('500')
         
 _thread.start_new_thread(flaskThread,())
-prediction_service()
-
+while True:
+  prediction_service()
+  sleep(60)
